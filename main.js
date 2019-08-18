@@ -1,4 +1,7 @@
 var allButtons = $('#buttons > span')
+var n=0  
+var size = allButtons.length
+var timerId=setTimer()
 
 for (let i = 0; i < allButtons.length; i++) {
   $(allButtons[i]).on('click', function(x) {
@@ -7,20 +10,23 @@ for (let i = 0; i < allButtons.length; i++) {
     $('#images').css({
       transform: 'translate(' + p + 'px)'
     })
-    n = index
-    activeButton(allButtons.eq(n))
+    activeButton(allButtons.eq(index))
+    n=index 
+    window.clearInterval(timerId)
+    timerId=setTimer()
   })
 }
 
+$('.window').on('mouseenter', function() {
+  window.clearInterval(timerId)
+})
+
+$('.window').on('mouseleave', function() {
+  timerId = setTimer()
+})
 
 
-var n = 0;
-var size = allButtons.length
-allButtons.eq(n % size).trigger('click')
-
-
-var timerId = setTimer()
-
+/*工具函数*/
 function setTimer() {
   return setInterval(() => {
     n += 1
@@ -33,11 +39,3 @@ function activeButton($button) {
     .addClass('red')
     .siblings('.red').removeClass('red')
 }
-
-$('.window').on('mouseenter', function() {
-  window.clearInterval(timerId)
-})
-
-$('.window').on('mouseleave', function() {
-  timerId = setTimer()
-})
